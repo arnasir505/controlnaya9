@@ -11,6 +11,7 @@ import {
 } from '../../store/categoriesModalSlice/categoriesModalSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addCategory } from '../../store/categoriesModalSlice/categoriesModalThunks';
+import { fetchCategories } from '../../store/categoriesSlice/categoriesThunks';
 
 const CategoriesModal: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ const CategoriesModal: React.FC = () => {
     e.preventDefault();
     await dispatch(addCategory({ name: categoryName, type: categoryType }));
     dispatch(closeModal());
+    await dispatch(fetchCategories());
   };
 
   return (
@@ -75,7 +77,6 @@ const CategoriesModal: React.FC = () => {
                 <span className='visually-hidden' role='status'>
                   Loading...
                 </span>
-                Save
               </>
             ) : (
               'Save'

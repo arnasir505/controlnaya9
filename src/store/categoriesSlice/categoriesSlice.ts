@@ -1,5 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { Category } from '../../types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { ApiCategories, Category } from '../../types';
+import { fetchCategories } from './categoriesThunks';
+import { RootState } from '../../app/store';
 
 interface CategoriesState {
   items: Category[];
@@ -19,6 +21,31 @@ const categoriesSlice = createSlice({
   name: 'categories',
   initialState,
   reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCategories.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(
+        fetchCategories.fulfilled,
+        (state, { payload: categories }: PayloadAction<ApiCategories>) => {
+          state.loading = false;
+          state.items = Object.keys(categories).map((id) => ({
+            ...categories[id],
+            id,
+          }));
+        }
+      )
+      .addCase(fetchCategories.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+        state.items = [];
+      });
+  },
 });
 
 export const categoriesReducer = categoriesSlice.reducer;
+export const selectCategories = (state: RootState) => state.categories.items;
+export const selectCategoriesLoading = (state: RootState) =>
+  state.categories.loading;
