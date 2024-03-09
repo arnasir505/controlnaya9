@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ApiTransactions, Transaction } from '../../types';
 import { fetchTransactions } from './transactionsThunks';
+import { RootState } from '../../app/store';
 
 interface TransactionsState {
   items: Transaction[];
@@ -45,3 +46,5 @@ const transactionsSlice = createSlice({
 });
 
 export const transactionsReducer = transactionsSlice.reducer;
+export const selectTransactions = (state: RootState) => state.transactions.items;
+export const selectTransactionsLoading = (state: RootState) => state.transactions.loading;
