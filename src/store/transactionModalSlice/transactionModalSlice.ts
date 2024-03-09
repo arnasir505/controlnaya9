@@ -1,12 +1,11 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { ApiTransaction } from '../../types';
 import { addTransaction } from './transactionModalThunks';
 
 interface TransactionModalState {
   show: boolean;
   type: string;
-  form: ApiTransaction;
+  form: { category: string; amount: number | null; createdAt: string };
   transactionId: string | null;
   loading: boolean;
   error: boolean;

@@ -8,6 +8,7 @@ import {
   closeModal,
   selectTransactionModalAmount,
   selectTransactionModalCategory,
+  selectTransactionModalLoading,
   selectTransactionModalShow,
   selectTransactionModalType,
 } from '../../store/transactionModalSlice/transactionModalSlice';
@@ -23,6 +24,7 @@ const TransactionsModal: React.FC = () => {
   const transactionCategory = useAppSelector(selectTransactionModalCategory);
   const transactionAmount = useAppSelector(selectTransactionModalAmount);
   const categories = useAppSelector(selectCategories);
+  const isLoading = useAppSelector(selectTransactionModalLoading);
 
   const categoryOptions = categories.filter(
     (category) => category.type === transactionType
@@ -38,12 +40,15 @@ const TransactionsModal: React.FC = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const transaction: ApiTransaction = {
-      category: transactionCategory,
-      amount: transactionAmount,
-      createdAt: new Date().toISOString(),
-    };
-    await dispatch(addTransaction(transaction));
+    if (transactionAmount) {
+      const transaction: ApiTransaction = {
+        category: transactionCategory,
+        amount: Math.abs(transactionAmount),
+        createdAt: new Date().toISOString(),
+      };
+      await dispatch(addTransaction(transaction));
+    }
+    dispatch(closeModal());
   };
 
   return (
@@ -110,9 +115,27 @@ const TransactionsModal: React.FC = () => {
             </div>
           </div>
           <div className='d-flex justify-content-end gap-2'>
-            <button className='btn btn-secondary'>Cancel</button>
-            <button className='btn btn-primary' type='submit'>
-              Save
+            <button className='btn btn-secondary' disabled={isLoading}>
+              Cancel
+            </button>
+            <button
+              className='btn btn-primary'
+              type='submit'
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <span
+                    className='spinner-border spinner-border-sm'
+                    aria-hidden='true'
+                  ></span>
+                  <span className='visually-hidden' role='status'>
+                    Loading...
+                  </span>
+                </>
+              ) : (
+                'Save'
+              )}
             </button>
           </div>
         </form>

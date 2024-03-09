@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import { showModal } from '../../store/transactionModalSlice/transactionModalSlice';
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   return (
     <nav className='navbar shadow-sm'>
@@ -20,7 +21,7 @@ const Navbar: React.FC = () => {
           </NavLink>
           <button
             className='nav-link text-decoration-underline text-primary'
-            onClick={() => dispatch(showModal())}
+            onClick={() => (navigate('/'), dispatch(showModal()))}
           >
             Add
           </button>
