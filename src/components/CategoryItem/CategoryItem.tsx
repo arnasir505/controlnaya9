@@ -6,6 +6,10 @@ import {
   setCategoryId,
   showModal,
 } from '../../store/categoriesModalSlice/categoriesModalSlice';
+import {
+  deleteCategory,
+  fetchCategories,
+} from '../../store/categoriesSlice/categoriesThunks';
 
 interface Props {
   id: string;
@@ -15,6 +19,14 @@ interface Props {
 
 const CategoryItem: React.FC<Props> = ({ id, name, type }) => {
   const dispatch = useAppDispatch();
+
+  const handleCategoryDelete = async (id: string) => {
+    const confirmDelete = confirm('Delete this category?');
+    if (confirmDelete) {
+      await dispatch(deleteCategory(id));
+      await dispatch(fetchCategories());
+    }
+  };
   return (
     <div className='card mb-2'>
       <div className='card-body d-flex justify-content-end align-items-center'>
@@ -32,7 +44,7 @@ const CategoryItem: React.FC<Props> = ({ id, name, type }) => {
         >
           <img src={editIcon} alt='edit' />
         </button>
-        <button className='btn ms-2'>
+        <button className='btn ms-2' onClick={() => handleCategoryDelete(id)}>
           <img src={trashIcon} alt='delete' />
         </button>
       </div>

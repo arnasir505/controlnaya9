@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ApiCategories, Category } from '../../types';
-import { fetchCategories } from './categoriesThunks';
+import { deleteCategory, fetchCategories } from './categoriesThunks';
 import { RootState } from '../../app/store';
 
 interface CategoriesState {
@@ -41,6 +41,18 @@ const categoriesSlice = createSlice({
         state.loading = false;
         state.error = true;
         state.items = [];
+      });
+    builder
+      .addCase(deleteCategory.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(deleteCategory.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(deleteCategory.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
       });
   },
 });

@@ -9,7 +9,7 @@ import { ApiCategory } from '../../types';
 
 interface CategoriesModalState {
   show: boolean;
-  form: { categoryName: string; categoryType: string };
+  form: ApiCategory;
   loading: boolean;
   error: boolean;
   categoryId: string | null;
@@ -18,8 +18,8 @@ interface CategoriesModalState {
 const initialState: CategoriesModalState = {
   show: false,
   form: {
-    categoryName: '',
-    categoryType: '',
+    name: '',
+    type: '',
   },
   loading: false,
   error: false,
@@ -37,15 +37,15 @@ const categoriesModalSlice = createSlice({
       state.show = false;
       state.categoryId = null;
     },
-    changeCategoryName: (state, action: PayloadAction<string>) => {
-      state.form.categoryName = action.payload;
+    changeCategoryName: (state, {payload: name}: PayloadAction<string>) => {
+      state.form.name = name;
     },
-    changeCategoryType: (state, action: PayloadAction<string>) => {
-      state.form.categoryType = action.payload;
+    changeCategoryType: (state, {payload: type}: PayloadAction<string>) => {
+      state.form.type = type;
     },
     clearCategoriesModalForm: (state) => {
-      state.form.categoryName = '';
-      state.form.categoryType = '';
+      state.form.name = '';
+      state.form.type = '';
     },
     setCategoryId: (state, { payload: id }: PayloadAction<string>) => {
       state.categoryId = id;
@@ -73,8 +73,8 @@ const categoriesModalSlice = createSlice({
         fetchCategory.fulfilled,
         (state, { payload: category }: PayloadAction<ApiCategory>) => {
           state.loading = false;
-          state.form.categoryName = category.name;
-          state.form.categoryType = category.type;
+          state.form.name = category.name;
+          state.form.type = category.type;
         }
       )
       .addCase(fetchCategory.rejected, (state) => {
@@ -107,10 +107,10 @@ export const {
 } = categoriesModalSlice.actions;
 export const selectCategoriesModalShow = (state: RootState) =>
   state.categoriesModal.show;
-export const selectCategoriesModalCategoryName = (state: RootState) =>
-  state.categoriesModal.form.categoryName;
-export const selectCategoriesModalCategoryType = (state: RootState) =>
-  state.categoriesModal.form.categoryType;
+export const selectCategoriesModalName = (state: RootState) =>
+  state.categoriesModal.form.name;
+export const selectCategoriesModalType = (state: RootState) =>
+  state.categoriesModal.form.type;
 export const selectCategoriesModalLoading = (state: RootState) =>
   state.categoriesModal.loading;
 export const selectCategoriesModalCategoryId = (state: RootState) =>

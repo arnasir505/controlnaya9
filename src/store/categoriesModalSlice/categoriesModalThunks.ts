@@ -34,10 +34,7 @@ export const updateCategory = createAsyncThunk<
 >('categoriesModal/update', async (id: string, thunkApi) => {
   try {
     const updatedCategory = thunkApi.getState().categoriesModal.form;
-    await axiosApi.put('/categories/' + id + '.json', {
-      name: updatedCategory.categoryName,
-      type: updatedCategory.categoryType,
-    });
+    await axiosApi.put('/categories/' + id + '.json', updatedCategory);
   } catch (error) {
     console.log(error);
   }

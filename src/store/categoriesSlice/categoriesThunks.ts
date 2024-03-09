@@ -14,3 +14,14 @@ export const fetchCategories = createAsyncThunk(
     return categories;
   }
 );
+
+export const deleteCategory = createAsyncThunk(
+  'categories/delete',
+  async (id: string) => {
+    try {
+      await axiosApi.delete('/categories/' + id + '.json');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);

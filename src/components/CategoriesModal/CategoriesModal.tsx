@@ -6,10 +6,10 @@ import {
   clearCategoriesModalForm,
   closeModal,
   selectCategoriesModalCategoryId,
-  selectCategoriesModalCategoryName,
-  selectCategoriesModalCategoryType,
   selectCategoriesModalLoading,
+  selectCategoriesModalName,
   selectCategoriesModalShow,
+  selectCategoriesModalType,
 } from '../../store/categoriesModalSlice/categoriesModalSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -24,8 +24,8 @@ const CategoriesModal: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const show = useAppSelector(selectCategoriesModalShow);
-  const categoryName = useAppSelector(selectCategoriesModalCategoryName);
-  const categoryType = useAppSelector(selectCategoriesModalCategoryType);
+  const categoryName = useAppSelector(selectCategoriesModalName);
+  const categoryType = useAppSelector(selectCategoriesModalType);
   const isLoading = useAppSelector(selectCategoriesModalLoading);
   const categoryId = useAppSelector(selectCategoriesModalCategoryId);
 
