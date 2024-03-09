@@ -2,8 +2,6 @@ import React, { useCallback, useEffect } from 'react';
 import TransactionsModal from '../../components/TransactionsModal/TransactionsModal';
 import { Spinner } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import CategoryItem from '../../components/CategoryItem/CategoryItem';
-import { fetchCategories } from '../../store/categoriesSlice/categoriesThunks';
 import {
   selectTransactions,
   selectTransactionsLoading,
