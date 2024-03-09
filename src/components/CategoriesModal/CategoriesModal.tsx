@@ -1,28 +1,58 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import {
   changeCategoryName,
   changeCategoryType,
+  clearCategoriesModalForm,
   closeModal,
+  selectCategoriesModalCategoryId,
   selectCategoriesModalCategoryName,
   selectCategoriesModalCategoryType,
   selectCategoriesModalLoading,
   selectCategoriesModalShow,
 } from '../../store/categoriesModalSlice/categoriesModalSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addCategory } from '../../store/categoriesModalSlice/categoriesModalThunks';
+import {
+  addCategory,
+  fetchCategory,
+  updateCategory,
+} from '../../store/categoriesModalSlice/categoriesModalThunks';
 import { fetchCategories } from '../../store/categoriesSlice/categoriesThunks';
+import { useNavigate } from 'react-router-dom';
 
 const CategoriesModal: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const show = useAppSelector(selectCategoriesModalShow);
   const categoryName = useAppSelector(selectCategoriesModalCategoryName);
   const categoryType = useAppSelector(selectCategoriesModalCategoryType);
   const isLoading = useAppSelector(selectCategoriesModalLoading);
+  const categoryId = useAppSelector(selectCategoriesModalCategoryId);
+
+  const getCategoriesModalForm = useCallback(async () => {
+    try {
+      if (categoryId) {
+        await dispatch(fetchCategory(categoryId)).unwrap();
+      } else {
+        dispatch(clearCategoriesModalForm());
+      }
+    } catch (error) {
+      navigate('/404', { replace: true });
+    }
+  }, [categoryId, dispatch, navigate]);
+
+  useEffect(() => {
+    void getCategoriesModalForm();
+  }, [getCategoriesModalForm]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await dispatch(addCategory({ name: categoryName, type: categoryType }));
+    if (categoryId) {
+      await dispatch(updateCategory(categoryId));
+    } else {
+      await dispatch(addCategory({ name: categoryName, type: categoryType }));
+    }
+    dispatch(clearCategoriesModalForm());
     dispatch(closeModal());
     await dispatch(fetchCategories());
   };

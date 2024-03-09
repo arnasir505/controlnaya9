@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import CategoriesModal from '../../components/CategoriesModal/CategoriesModal';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { showModal } from '../../store/categoriesModalSlice/categoriesModalSlice';
+import {
+  showModal,
+} from '../../store/categoriesModalSlice/categoriesModalSlice';
 import Spinner from '../../components/Spinner/Spinner';
 import { fetchCategories } from '../../store/categoriesSlice/categoriesThunks';
 import {

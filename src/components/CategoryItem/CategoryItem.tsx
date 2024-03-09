@@ -1,6 +1,11 @@
 import React from 'react';
 import editIcon from '../../assets/pencil-square.svg';
 import trashIcon from '../../assets/trash3.svg';
+import { useAppDispatch } from '../../app/hooks';
+import {
+  setCategoryId,
+  showModal,
+} from '../../store/categoriesModalSlice/categoriesModalSlice';
 
 interface Props {
   id: string;
@@ -9,6 +14,7 @@ interface Props {
 }
 
 const CategoryItem: React.FC<Props> = ({ id, name, type }) => {
+  const dispatch = useAppDispatch();
   return (
     <div className='card mb-2'>
       <div className='card-body d-flex justify-content-end align-items-center'>
@@ -20,7 +26,10 @@ const CategoryItem: React.FC<Props> = ({ id, name, type }) => {
         >
           {type}
         </span>
-        <button className='btn ms-3'>
+        <button
+          className='btn ms-3'
+          onClick={() => (dispatch(showModal()), dispatch(setCategoryId(id)))}
+        >
           <img src={editIcon} alt='edit' />
         </button>
         <button className='btn ms-2'>
